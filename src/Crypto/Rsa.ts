@@ -1,5 +1,4 @@
 const forge = require("./CustomForge");
-import * as awaiting from "awaiting";
 import KeyPair from "../Types/Keypair";
 
 const forgeRsa = forge.rsa;
@@ -11,10 +10,15 @@ const forgePki = forge.pki;
  * @param {number} workers
  * @returns {Promise<object>}
  */
-export const createKeyPair = async (bits: number = 2048, workers: number = -1) => {
-    return awaiting.callback(forgeRsa.generateKeyPair, {
-        bits: bits,
-        workers: workers
+export const createKeyPair = (bits: number = 2048, workers: number = -1): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        forgeRsa.generateKeyPair({
+            bits: bits,
+            workers: workers
+        }, (err, result) => {
+            if (err) return reject(err)
+            resolve(result)
+        });
     });
 };
 

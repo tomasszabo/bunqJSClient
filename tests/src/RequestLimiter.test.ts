@@ -1,6 +1,5 @@
 import Prepare from "../TestHelpers/Prepare";
 
-const awaiting = require("awaiting");
 import RequestLimitFactory from "../../src/RequestLimitFactory";
 import RequestLimiter from "../../src/RequestLimiter";
 
@@ -25,12 +24,16 @@ describe("RequestLimiter", () => {
 
             expect(requestLimiter).toBeInstanceOf(RequestLimiter);
 
-            const promise1 = requestLimiter.run(async () => awaiting.delay(500));
-            const promise2 = requestLimiter.run(async () => awaiting.delay(500));
-            const promise3 = requestLimiter.run(async () => awaiting.delay(500));
-            const promise4 = requestLimiter.run(async () => awaiting.delay(500));
-            const promise5 = requestLimiter.run(async () => awaiting.delay(500));
-            const promise6 = requestLimiter.run(async () => awaiting.delay(500));
+            const delay = (ms) => {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            };
+
+            const promise1 = requestLimiter.run(() => delay(500));
+            const promise2 = requestLimiter.run(() => delay(500));
+            const promise3 = requestLimiter.run(() => delay(500));
+            const promise4 = requestLimiter.run(() => delay(500));
+            const promise5 = requestLimiter.run(() => delay(500));
+            const promise6 = requestLimiter.run(() => delay(500));
 
             await Promise.all([promise1, promise2, promise3, promise4, promise5, promise6]);
         });

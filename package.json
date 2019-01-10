@@ -20,7 +20,6 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "awaiting": "^3.0.0",
     "axios": "^0.16.2",
     "es6-promise-promise": "^1.0.0",
     "loglevel": "^1.4.1",

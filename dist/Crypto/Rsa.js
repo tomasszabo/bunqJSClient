@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const forge = require("./CustomForge");
-const awaiting = require("awaiting");
 const forgeRsa = forge.rsa;
 const forgePki = forge.pki;
 /**
@@ -18,12 +17,18 @@ const forgePki = forge.pki;
  * @param {number} workers
  * @returns {Promise<object>}
  */
-exports.createKeyPair = (bits = 2048, workers = -1) => __awaiter(this, void 0, void 0, function* () {
-    return awaiting.callback(forgeRsa.generateKeyPair, {
-        bits: bits,
-        workers: workers
+exports.createKeyPair = (bits = 2048, workers = -1) => {
+    return new Promise((resolve, reject) => {
+        forgeRsa.generateKeyPair({
+            bits: bits,
+            workers: workers
+        }, (err, result) => {
+            if (err)
+                return reject(err);
+            resolve(result);
+        });
     });
-});
+};
 /**
  * @param {KeyPair} keypair
  * @returns {Promise<{publicKey: any; privateKey: any}>}
